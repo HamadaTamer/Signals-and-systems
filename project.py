@@ -213,25 +213,25 @@ def main():
     filepaths = [filepath]
     
     # # Plot audio signals
-    #plot_audio_signals(filepaths)
+    plot_audio_signals(filepaths)
 
     # # Scale and shift signal, then add and play
-    # add_and_play_signals(filepath,1,1.5 )
+    add_and_play_signals(filepath,1,1.5 )
 
     # # Plot Fourier transform
-    # plot_fourier_transform(filepath)
+    plot_fourier_transform(filepath)
 
     # Shift frequency and play
     shift_frequency_and_play(filepath, 1000)
 
     # # Apply low pass filter and play
-    # low_pass_filter_and_play(filepath, 3000)
+    low_pass_filter_and_play(filepath, 3000)
 
     # # Apply high pass filter and play
-    # high_pass_filter_and_play(filepath, 3000)
+    high_pass_filter_and_play(filepath, 3000)
 
     # # Apply triangular filter and play
-    # triangular_filter_and_play(filepath, 3000)
+    triangular_filter_and_play(filepath, 3000)
 
 if __name__ == "__main__":
     main()

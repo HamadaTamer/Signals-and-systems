@@ -11,7 +11,7 @@ def get_relative_path(filename):
 
 # Example file path
 recAhmed = get_relative_path('Ahmeds recording.wav')
-recAmr = get_relative_path('Amrs recording.m4a')
+recAmr = get_relative_path('Amrs recording.wav')
 recMahmoud = get_relative_path('Mahmouds recording.wav')
 
 def record_audio(duration, samplerate):
@@ -37,6 +37,7 @@ def plot_audio_signals(filepaths):
 
 def scale_and_shift_signal(filepath, a, t0, samplerate):
     data, original_samplerate = sf.read(filepath)
+    print(original_samplerate)
     if original_samplerate != samplerate:
         raise ValueError(f"Sampling rate mismatch: {original_samplerate} vs {samplerate}")
 

@@ -11,7 +11,7 @@ def get_relative_path(filename):
 
 # Example file path
 recAhmed = get_relative_path('Ahmeds recording.wav')
-recAmr = get_relative_path('Amrs recording.wav')
+recAmr = get_relative_path('Amrs recording.m4a')
 recMahmoud = get_relative_path('Mahmouds recording.wav')
 
 def record_audio(duration, samplerate):

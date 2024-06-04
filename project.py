@@ -11,6 +11,15 @@ def get_relative_path(filename):
 
 # Example file path
 recAhmed = get_relative_path('Ahmeds recording.wav')
+recAmr = get_relative_path('Amrs recording.wav')
+recMahmoud = get_relative_path('Mahmouds recording.wav')
+
+def record_audio(duration, samplerate):
+    print("Recording...")
+    recording = sd.rec(int(duration * samplerate), samplerate=samplerate, channels=1)
+    sd.wait()
+    print("Recording finished.")
+    return recording.flatten()
 
 def plot_audio_signals(filepaths):
     plt.figure(figsize=(12, 6))
@@ -124,27 +133,57 @@ def triangular_filter_and_play(filepath, wc, samplerate):
     plt.title('Triangular Filter Response')
     plt.show()
 
-# Example usages
-recAhmed = get_relative_path('Ahmeds recording.wav')
-filepaths = [recAhmed]
 
-# Plot audio signals
-plot_audio_signals(filepaths)
+def main():
+    choice = input("Do you want to (1) record your own sound or (2) use pre-existing sounds? Enter 1 or 2: ")
 
-# Scale and shift signal, then add and play
-add_and_play_signals(recAhmed, 1.5, 0.5, 48000)
+    if choice == '1':
+        duration = float(input("Enter the duration of the recording in seconds: "))
+        samplerate = 48000
+        recording = record_audio(duration, samplerate)
+        filepath = 'user_recording.wav'
+        sf.write(filepath, recording, samplerate)
+    elif choice == '2':
+        print("Choose from the following pre-existing sounds:")
+        print("1. Ahmed's recording")
+        print("2. Amr's recording")
+        print("3. Mahmoud's recording")
+        sound_choice = input("Enter 1, 2, or 3: ")
+        if sound_choice == '1':
+            filepath = recAhmed
+        elif sound_choice == '2':
+            filepath = recAmr
+        elif sound_choice == '3':
+            filepath = recMahmoud
+        else:
+            print("Invalid choice. Exiting.")
+            return
+    else:
+        print("Invalid choice. Exiting.")
+        return
 
-# Plot Fourier transform
-plot_fourier_transform(recAhmed, 48000)
+    filepaths = [filepath]
+    
+    # Plot audio signals
+    plot_audio_signals(filepaths)
 
-# Shift frequency and play
-shift_frequency_and_play(recAhmed, 1000, 48000)
+    # Scale and shift signal, then add and play
+    add_and_play_signals(filepath, 1.5, 0.5, 48000)
 
-# Apply low pass filter and play
-low_pass_filter_and_play(recAhmed, 3000, 48000)
+    # Plot Fourier transform
+    plot_fourier_transform(filepath, 48000)
 
-# Apply high pass filter and play
-high_pass_filter_and_play(recAhmed, 3000, 48000)
+    # Shift frequency and play
+    shift_frequency_and_play(filepath, 1000, 48000)
 
-# Apply triangular filter and play
-triangular_filter_and_play(recAhmed, 3000, 48000)
+    # Apply low pass filter and play
+    low_pass_filter_and_play(filepath, 3000, 48000)
+
+    # Apply high pass filter and play
+    high_pass_filter_and_play(filepath, 3000, 48000)
+
+    # Apply triangular filter and play
+    triangular_filter_and_play(filepath, 3000, 48000)
+
+if __name__ == "__main__":
+    main()

@@ -107,7 +107,17 @@ def plot_fourier_transform(filepath):
     plt.title('Fourier Transform of the Signal')
     plt.show()
 
+def plot_fourier_data(xf, yf):
+    plt.figure(figsize=(24, 6))
+    plt.plot(xf, np.abs(yf))
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Magnitude')
+    plt.title('Fourier Transform of the Signal')
+    plt.show()
+
+
 def shift_frequency_and_play(filepath, freq_shift):
+    print("shift frequency")
     data, samplerate = sf.read(filepath)
     
     # Ensure data is one-dimensional (single channel)
@@ -122,20 +132,26 @@ def shift_frequency_and_play(filepath, freq_shift):
     play_audio(shifted_signal.real, samplerate)
 
 def low_pass_filter_and_play(filepath, cutoff_freq):
+    print("low pass:")
     data, samplerate = sf.read(filepath)
     
     # Ensure data is one-dimensional (single channel)
     if data.ndim > 1:
         data = data.mean(axis=1)  # Average the channels to create a single channel
+    
+    
 
     N = len(data)
     yf = fft(data)
     xf = fftfreq(N, 1 / samplerate)
     yf[np.abs(xf) > cutoff_freq] = 0
+    plot_fourier_data(xf,yf )
     filtered_signal = ifft(yf)
     play_audio(filtered_signal.real, samplerate)
 
 def high_pass_filter_and_play(filepath, cutoff_freq):
+    print("high pass:")
+
     data, samplerate = sf.read(filepath)
     
     # Ensure data is one-dimensional (single channel)
@@ -146,10 +162,13 @@ def high_pass_filter_and_play(filepath, cutoff_freq):
     yf = fft(data)
     xf = fftfreq(N, 1 / samplerate)
     yf[np.abs(xf) < cutoff_freq] = 0
+    plot_fourier_data(xf,yf )
+
     filtered_signal = ifft(yf)
     play_audio(filtered_signal.real, samplerate)
 
 def triangular_filter_and_play(filepath, wc):
+    print("triangular filter")
     data, samplerate = sf.read(filepath)
     
     # Ensure data is one-dimensional (single channel)
@@ -159,7 +178,6 @@ def triangular_filter_and_play(filepath, wc):
     N = len(data)
     yf = fft(data)
     xf = fftfreq(N, 1 / samplerate)
-    
     # Create the triangular filter
     filter_response = np.zeros_like(xf)
     for i in range(len(xf)):
@@ -171,9 +189,14 @@ def triangular_filter_and_play(filepath, wc):
             filter_response[i] = (wc - xf[i]) / (wc / 2)
     
     yf_filtered = yf * filter_response
+    #plot_fourier_data(xf, yf_filtered)
     filtered_signal = ifft(yf_filtered)
     play_audio(filtered_signal.real, samplerate)
-    
+    print("yf_filtered")
+    plot_fourier_data(xf, yf_filtered)
+    print("yf")
+    plot_fourier_data(xf, yf)
+    print("")
     # Plot the filter response
     plt.figure(figsize=(12, 6))
     plt.plot(xf, filter_response)

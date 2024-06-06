@@ -245,7 +245,7 @@ def main():
     # plot_fourier_transform(filepath)
 
     # # Shift frequency and play
-    # shift_frequency_and_play(filepath, 1000)
+    # shift_frequency_and_play(filepath, 200)
 
     # # Apply low pass filter and play
     # low_pass_filter_and_play(filepath, 3000)

@@ -87,7 +87,18 @@ def add_and_play_signals(filepath, a, t0):
     plot_audio(scaled_shifted_data, 48000)
     min_length = min(len(original_data), len(scaled_shifted_data))
     combined_signal = original_data[:min_length] + scaled_shifted_data[:min_length]
-    play_audio(scaled_shifted_data, samplerate)
+    plot_combined(combined_signal, 48000)
+    play_audio(combined_signal, samplerate)
+
+def plot_combined(data, samplerate):
+    plt.figure(figsize=(12, 6))
+    time = np.linspace(0., len(data) / samplerate, num=len(data))
+    plt.plot(time, data, label='Combined Audio')
+    plt.xlabel('Time [s]')
+    plt.ylabel('Amplitude')
+    plt.title('Combined Audio Signal')
+    plt.legend()
+    plt.show()
 
 def plot_fourier_transform(filepath):
     data, samplerate = sf.read(filepath)
@@ -244,8 +255,8 @@ def main():
     # # Plot Fourier transform
     plot_fourier_transform(filepath)
 
-    # Shift frequency and play
-    shift_frequency_and_play(filepath, 1000)
+    # # Shift frequency and play
+    shift_frequency_and_play(filepath, 200)
 
     # # Apply low pass filter and play
     low_pass_filter_and_play(filepath, 3000)
@@ -253,7 +264,7 @@ def main():
     # # Apply high pass filter and play
     high_pass_filter_and_play(filepath, 3000)
 
-    # # Apply triangular filter and play
+    # Apply triangular filter and play
     triangular_filter_and_play(filepath, 3000)
 
 if __name__ == "__main__":
